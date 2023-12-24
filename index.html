@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Encryption/Decryption Tool</title>
+    <title>Decryption Tool</title>
 
     <!-- Include Tailwind CSS via CDN -->
     <link
@@ -13,63 +13,9 @@
   </head>
   <body class="bg-gray-100 min-h-screen flex items-center justify-center">
     <div class="bg-white p-8 rounded shadow-md max-w-md w-full">
-      <h1 class="text-2xl font-semibold mb-6">Encryption/Decryption Tool</h1>
+      <h1 class="text-2xl font-semibold mb-6">Decryption Tool</h1>
 
       <div class="mb-4">
-        <label
-          for="encryptionKey"
-          class="block text-sm font-medium text-gray-600"
-          >Enter Encryption Key:</label
-        >
-        <input
-          type="text"
-          id="encryptionKey"
-          placeholder="Enter encryption key"
-          class="mt-1 p-2 w-full border rounded"
-        />
-      </div>
-
-      <div class="mb-4">
-        <label
-          for="messageToEncrypt"
-          class="block text-sm font-medium text-gray-600"
-          >Enter Message to Encrypt:</label
-        >
-        <input
-          type="text"
-          id="messageToEncrypt"
-          placeholder="Enter message to encrypt"
-          class="mt-1 p-2 w-full border rounded"
-        />
-      </div>
-
-      <button
-        onclick="encryptMessage()"
-        class="mt-2 bg-green-500 text-white px-4 py-2 rounded"
-      >
-        Encrypt Message
-      </button>
-
-      <div class="mt-6">
-        <label
-          for="encryptedMessage"
-          class="block text-sm font-medium text-gray-600"
-          >Encrypted Message:</label
-        >
-        <div
-          id="encryptedMessage"
-          class="mt-1 p-2 w-full border rounded bg-gray-100"
-        ></div>
-      </div>
-
-      <button
-        onclick="decryptMessage()"
-        class="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Decrypt Message
-      </button>
-
-      <div class="mt-6">
         <label
           for="decryptionKey"
           class="block text-sm font-medium text-gray-600"
@@ -83,6 +29,13 @@
         />
       </div>
 
+      <button
+        onclick="decryptMessage()"
+        class="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Decrypt Message
+      </button>
+
       <div class="mt-6">
         <label
           for="decryptedMessage"
@@ -91,7 +44,7 @@
         >
         <div
           id="decryptedMessage"
-          class="mt-1 p-2 w-full border rounded bg-gray-100"
+          class="mt-1 p-2 w-full border rounded bg-gray-100 break-all"
         ></div>
       </div>
     </div>
@@ -100,38 +53,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 
     <script>
-      function encryptMessage() {
-        const encryptionKeyElement = document.getElementById("encryptionKey");
-        const messageToEncryptElement =
-          document.getElementById("messageToEncrypt");
-        const encryptedMessageElement =
-          document.getElementById("encryptedMessage");
-
-        const encryptionKey = encryptionKeyElement.value;
-        const messageToEncrypt = messageToEncryptElement.value;
-
-        // Encrypt the message with the provided key
-        const encryptedMessage = CryptoJS.AES.encrypt(
-          messageToEncrypt,
-          encryptionKey
-        ).toString();
-        encryptedMessageElement.textContent = encryptedMessage;
-      }
-
       function decryptMessage() {
         const decryptionKeyElement = document.getElementById("decryptionKey");
-        const encryptedMessageElement =
-          document.getElementById("encryptedMessage");
         const decryptedMessageElement =
           document.getElementById("decryptedMessage");
 
         const decryptionKey = decryptionKeyElement.value;
-        const encryptedMessage = encryptedMessageElement.textContent;
+        const encryptedMessage =
+          "U2FsdGVkX186FBtVNUAGyfTItwAtr0z7rlspsBd2eEjPNf7yc186w5kA9k0Ijm7yqGFaItM6WSWss5jNc61+Xw==";
 
-        // Decrypt the message with the provided key
-        const bytes = CryptoJS.AES.decrypt(encryptedMessage, decryptionKey);
-        const decryptedMessage = bytes.toString(CryptoJS.enc.Utf8);
-        decryptedMessageElement.textContent = decryptedMessage;
+        // Decrypt the hardcoded message with the provided key
+        try {
+          const bytes = CryptoJS.AES.decrypt(encryptedMessage, decryptionKey);
+          const decryptedMessage = bytes.toString(CryptoJS.enc.Utf8);
+
+          if (decryptedMessage === "") {
+            decryptedMessageElement.textContent = "Invalid Decryption Key";
+          } else {
+            decryptedMessageElement.textContent = decryptedMessage;
+          }
+        } catch (error) {
+          decryptedMessageElement.textContent =
+            "Error: Unable to decrypt message. Please check the decryption key and try again.";
+        }
       }
     </script>
   </body>
