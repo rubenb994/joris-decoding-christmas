@@ -3,83 +3,105 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Decryption Tool</title>
+    <title>Console Output</title>
+    <style>
+      body {
+        font-family: "Courier New", monospace;
+        background-color: black;
+        color: rgb(47, 255, 99);
+        padding: 10px 300px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
 
-    <!-- Include Tailwind CSS via CDN -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
-    <link href="/styles.css" rel="stylesheet" />
+      .wrapper {
+        width: 800px;
+      }
+
+      .console {
+        white-space: pre-wrap;
+      }
+
+      #button-to-decode {
+        display: none;
+      }
+    </style>
   </head>
-  <body
-    class="bg-gray-100 min-h-screen flex items-center justify-center background"
-  >
-    <div class="bg-white p-8 rounded shadow-md max-w-md w-full">
-      <h1 class="text-2xl font-semibold mb-6">Decryption Tool</h1>
+  <body>
+    <div class="wrapper">
+      <pre id="console"></pre>
 
-      <div class="mb-4">
-        <label
-          for="decryptionKey"
-          class="block text-sm font-medium text-gray-600"
-          >Enter Decryption Key:</label
-        >
-        <input
-          type="text"
-          id="decryptionKey"
-          placeholder="Enter decryption key"
-          class="mt-1 p-2 w-full border rounded"
-        />
-      </div>
-
-      <button
-        onclick="decryptMessage()"
-        class="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Decrypt Message
-      </button>
-
-      <div class="mt-6">
-        <label
-          for="decryptedMessage"
-          class="block text-sm font-medium text-gray-600"
-          >Decrypted Message:</label
-        >
-        <div
-          id="decryptedMessage"
-          class="mt-1 p-2 w-full border rounded bg-gray-100 break-all"
-        ></div>
+      <div id="button-to-decode">
+        <a href="decode.html">Decryption tool</a>
       </div>
     </div>
 
-    <!-- Include CryptoJS via CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
-
     <script>
-      function decryptMessage() {
-        const decryptionKeyElement = document.getElementById("decryptionKey");
-        const decryptedMessageElement =
-          document.getElementById("decryptedMessage");
+      function writeToConsole(text, delay) {
+        var consoleElement = document.getElementById("console");
+        var index = 0;
 
-        const decryptionKey = decryptionKeyElement.value;
-        const encryptedMessage =
-          "U2FsdGVkX186FBtVNUAGyfTItwAtr0z7rlspsBd2eEjPNf7yc186w5kA9k0Ijm7yqGFaItM6WSWss5jNc61+Xw==";
-
-        // Decrypt the hardcoded message with the provided key
-        try {
-          const bytes = CryptoJS.AES.decrypt(encryptedMessage, decryptionKey);
-          const decryptedMessage = bytes.toString(CryptoJS.enc.Utf8);
-
-          if (decryptedMessage === "") {
-            decryptedMessageElement.textContent = "Invalid Decryption Key";
-          } else {
-            decryptedMessageElement.textContent = decryptedMessage;
-          }
-        } catch (error) {
-          decryptedMessageElement.textContent =
-            "Error: Unable to decrypt message. Please check the decryption key and try again.";
+        function showButton() {
+          var button = document.getElementById("button-to-decode");
+          button.style.display = "block";
         }
+
+        function addText() {
+          consoleElement.textContent += text[index++];
+          if (index < text.length) {
+            setTimeout(addText, delay);
+          } else {
+            showButton();
+          }
+        }
+
+        addText();
       }
+
+      var output = `
+Lieve Joris,
+
+Ik hoop dat deze brief je met de fonkelende geest van de feestdagen bereikt. De
+Noordpool gonst van activiteit, maar ik heb vernomen dat jij degene bent met de
+uitzonderlijke digitale vaardigheden die me uit de nood kan helpen.
+
+Het is mij ter ore gekomen dat een aanwijzing voor de verloren kerstcadeaus te
+vinden is op de volgende website: https://rubenb994.github.io/decode. Daar schijnt de
+sleutel te liggen om de magie van Kerstmis te herstellen en de cadeaus veilig te
+stellen. Daarnaast heb ik de onderstaande cryptische boodschap ontvangen. Wie
+weet kan het je helpen.
+
+Ik vertrouw op jouw bekwaamheid om deze digitale queeste tot een succes te
+maken. De vreugde van ontelbare kinderen wereldwijd rust op jouw schouders, en
+ik geloof er sterk in dat jij, mijn dappere digitale helper, de magie van het
+seizoen zult herstellen.
+
+Met oprechte dankbaarheid en kerstgroeten,
+
+De Kerstman 🎅
+
+
+
+jUliuS caEsar, a Towering figure in ancient roman History, ascEnded to power aS
+a military gEneral and statesman, ultimately beCOmiNg the Dictator perpetuo, or
+perpetuaL dictator, of thE roman republic. born inTo a paTrician family in 100
+bcE, caesaR quickly distinguished himself On the battleFiEld, eArning a
+reputation for military brillianCe and strategic acumen. His coNqUest of gaul
+froM 58 to 50 BcE not only solidified his militaRy prowEss but also enricheD him
+and his legions.
+
+however, Caesar's political career was as dynamic as His militAry exPloiTs.
+dEspite his successes, his Relationship with the roman senate soured, leading to
+a protracted power struggle. crossing the rubicon river in 49 bce, caesar
+famously declared, "alea iacta est" ("the die is cast"), signaling the beginning
+of a civil war against his rival, pompey, and the roman senate. caesar emerged
+victorious, effectively ending the roman republic and paving the way for the
+rise of the roman empire.
+      `;
+
+      // Example usage
+      writeToConsole(output, 25);
     </script>
   </body>
 </html>
